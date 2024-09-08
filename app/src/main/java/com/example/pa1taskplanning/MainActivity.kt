@@ -12,6 +12,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
@@ -23,59 +24,60 @@ class MainActivity : AppCompatActivity() {
     private lateinit var addTaskButton: Button
     private lateinit var taskListView: ListView
     private lateinit var taskAdapter: ArrayAdapter<String>
-    private val taskList = ArrayList<String>()
-    private val maxTasks = 10
+    private var tasks = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
-        // Initialize Firebase Auth
+        // Firebase and UI elements initialization
         auth = FirebaseAuth.getInstance()
-        user = auth.currentUser ?: run {
-            val intent = Intent(applicationContext, Login::class.java)
-            startActivity(intent)
-            finish()
-            return
-        }
-
-        // Initialize UI elements
         buttonLogout = findViewById(R.id.logoutButton)
         taskInput = findViewById(R.id.taskInput)
         addTaskButton = findViewById(R.id.addTaskButton)
         taskListView = findViewById(R.id.taskListView)
+        user = auth.currentUser!!
 
-        // Set up task list adapter
-        taskAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, taskList)
+        // initialize the task list adapter
+        taskAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, tasks)
         taskListView.adapter = taskAdapter
         taskListView.choiceMode = ListView.CHOICE_MODE_MULTIPLE
 
-        // Set logout button functionality
+        addTaskButton.setOnClickListener {
+            val task = taskInput.text.toString()
+            if (task.isNotBlank() && tasks.size < 10) {
+                tasks.add(task)
+                taskAdapter.notifyDataSetChanged()
+                taskInput.text.clear()
+            } else if (tasks.size >= 10) {
+                Toast.makeText(this, "Can only add 10 tasks at a time", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        taskListView.setOnItemClickListener { _, _, position, _ ->
+            val task = tasks[position]
+            tasks.removeAt(position)
+            taskAdapter.notifyDataSetChanged()
+
+            for (i in 0 until taskListView.count) {
+                taskListView.setItemChecked(i, false)
+            }
+
+            Snackbar.make(taskListView, "Task deleted", Snackbar.LENGTH_LONG)
+                .setAction("UNDO") {
+                    tasks.add(position, task)
+                    taskAdapter.notifyDataSetChanged()
+                }.show()
+        }
+
         buttonLogout.setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
+            auth.signOut()
             val intent = Intent(applicationContext, Login::class.java)
             startActivity(intent)
             finish()
         }
-
-        // Add task button functionality
-        addTaskButton.setOnClickListener {
-            if (taskList.size >= maxTasks) {
-                Toast.makeText(this, "You can only add 10 tasks at a time.", Toast.LENGTH_SHORT).show()
-            } else {
-                val task = taskInput.text.toString()
-                if (task.isNotEmpty()) {
-                    taskList.add(task)
-                    taskAdapter.notifyDataSetChanged()
-                    taskInput.text.clear()
-                }
-            }
-        }
     }
 }
+
+

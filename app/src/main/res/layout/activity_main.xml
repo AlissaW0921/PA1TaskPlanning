@@ -4,23 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:layout_height="match_parent"
+    android:background="#FFEBEE"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/user_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
     <Button
         android:id="@+id/logoutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/logout"
-        android:layout_margin="16dp"/>
+        android:layout_gravity="end"
+        android:layout_margin="16dp"
+        android:backgroundTint="#F48FB1"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"/>
 
+    <EditText
+        android:id="@+id/taskInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter a task"
+        android:padding="12dp"
+        android:layout_margin="16dp"
+        android:backgroundTint="#FFFFFF"
+        android:textColor="#000000"
+        android:textColorHint="#F48FB1"/>
 
+    <Button
+        android:id="@+id/addTaskButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Task"
+        android:backgroundTint="#F48FB1"
+        android:textColor="#FFFFFF"
+        android:layout_gravity="center"/>
 
+    <ListView
+        android:id="@+id/taskListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:dividerHeight="8dp"
+        android:layout_marginTop="16dp"/>
 </LinearLayout>

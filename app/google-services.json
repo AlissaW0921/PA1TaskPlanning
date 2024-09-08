@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "364347849686",
+    "project_id": "pa1-task-planning",
+    "storage_bucket": "pa1-task-planning.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:364347849686:android:f203096e9696f4fa948277",
+        "android_client_info": {
+          "package_name": "com.example.pa1taskplanning"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXF20DWjxANL9jBlDwl0A1yI82CeXwfD4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

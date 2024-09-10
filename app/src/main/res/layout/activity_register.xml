@@ -67,6 +67,17 @@
             android:paddingEnd="0dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/password_requirements"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Password must be at least 8 characters, \ncontain a mix of upper and lower case, and include a number."
+        android:textColor="@color/black"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="8dp"
+        android:textSize="12sp" />
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:visibility="gone"
